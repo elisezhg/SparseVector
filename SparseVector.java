@@ -11,7 +11,7 @@ public class SparseVector {
     public class Node {
         public Object val;
         public int index;
-        public Node next = null;
+        public Node next = null; // pointeur vers le prochain noeud
 
         public Node(Object val, int index) {
             this.val = val;
@@ -52,11 +52,6 @@ public class SparseVector {
     // Ajouter ou mettre à jour l'élément à la position index
     public void set(int index, Object value) {
 
-        if (head == null) {
-            head = new Node(value, index);
-            return;
-        }
-
         Node current = this.head;
 
         while (current != null) {
@@ -81,26 +76,27 @@ public class SparseVector {
     // Supprimer l'élément à la position index
     public void remove(int index) {
 
-        if (this.head.index == index) {
+        // Enlève le premier noeud de la liste chaînée
+        if (this.head != null && this.head.index == index) {
             this.head = this.head.next;
+            return;
         }
 
-        Node current = this.head.next;
+        // Pointeurs vers le noeud actuel et le noeud précédent
+        Node current = this.head == null ? null : this.head.next;
         Node previous = this.head;
 
         while (current != null) {
 
-            System.out.println(current.index);
             // Enlève le noeud si c'est l'index qu'on cherche
             if (current.index == index) {
-                System.out.println("trouvé");
                 previous.next = current.next;
                 return;
             }
 
             // Sinon, on regarde le prochain noeud
-            current = current.next;
             previous = current;
+            current = current.next;
         }
     }
 
@@ -122,17 +118,5 @@ public class SparseVector {
         }
 
         return size;
-    }
-
-
-    public void print() {
-        Node current = this.head;
-
-        while (current != null) {
-            System.out.println("A l'index " + current.index + " se trouve la valeur " + current.val);
-            current = current.next;
-        }
-
-        System.out.println();
     }
 }
